@@ -9,17 +9,11 @@ jobs:
   terraform:
     name: Terraform Deploy
     runs-on: ubuntu-latest
-    environment: Terraform  # Especifica el entorno aquí
+    environment: Terraform
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-
-      - name: Print AWS Access Key for Debugging
-        run: echo "AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }} AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}"
-
-      - name: Print Environment Variables
-        run: env
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v2
@@ -42,7 +36,7 @@ jobs:
         working-directory: ./
 
       - name: Terraform Apply
-        run: terraform apply -var-file=env.tfvars -auto-approve tfplan
+        run: terraform apply -auto-approve tfplan
         working-directory: ./
 
       - name: Terraform Output
