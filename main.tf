@@ -1,5 +1,5 @@
 # Create network y VPC
-module "network" {
+/* module "network" {
   source             = "./modules/network"
   name               = "${var.layer}-network"
   layer              = var.layer
@@ -8,7 +8,7 @@ module "network" {
   azs                = var.azs
   private_subnets    = var.private_subnets
   public_subnets     = var.public_subnets
-}
+} */
 
 /* # Creacion de API Gateway que apunta hacia Kinesis Firehose
 module "api_gateway_centralizador_log" {
