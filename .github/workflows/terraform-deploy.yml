@@ -9,13 +9,17 @@ jobs:
   terraform:
     name: Terraform Deploy
     runs-on: ubuntu-latest
+    environment: Terraform  # Especifica el entorno aquí
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Print AWS Access Key
-        run: echo "AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }} AWS_SECRET_ACCESS_KEY=$${{ secrets.AWS_SECRET_ACCESS_KEY }}"
+      - name: Print AWS Access Key for Debugging
+        run: echo "AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY_ID }} AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}"
+
+      - name: Print Environment Variables
+        run: env
 
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v2
@@ -27,7 +31,7 @@ jobs:
       - name: Set up Terraform
         uses: hashicorp/setup-terraform@v1
         with:
-          terraform_version: '1.4.6'  # Asegúrate de usar la versión adecuada de Terraform
+          terraform_version: '1.4.6'
 
       - name: Terraform Init
         run: terraform init
