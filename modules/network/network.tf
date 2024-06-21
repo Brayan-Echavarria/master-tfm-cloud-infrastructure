@@ -78,8 +78,6 @@ resource "aws_route_table_association" "public" {
   route_table_id = aws_route_table.public[count.index].id
 }
 
-/* 
-
 resource "aws_subnet" "private" {
   count = length(var.private_subnets)
 
@@ -157,61 +155,6 @@ resource "aws_security_group" "allow_application" {
   )
 }
 
-resource "aws_security_group" "allow_db" {
-  name        = "${var.name}-allow-db"
-  description = "Allow DB inbound traffic"
-  vpc_id      = aws_vpc.vpc.id
-
-  ingress {
-    description = "port mysql"
-    from_port   = 3306
-    to_port     = 3306
-    protocol    = "tcp"
-    cidr_blocks = [var.vpc_cidr]
-  }
-  ingress {
-    description = "port postgres"
-    from_port   = 5432
-    to_port     = 5432
-    protocol    = "tcp"
-    cidr_blocks = [var.vpc_cidr]
-  }
-  ingress {
-    description = "port sql server"
-    from_port   = 1433
-    to_port     = 1433
-    protocol    = "tcp"
-    cidr_blocks = [var.vpc_cidr]
-  }
-  ingress {
-    description = "port oracle"
-    from_port   = 1521
-    to_port     = 1521
-    protocol    = "tcp"
-    cidr_blocks = [var.vpc_cidr]
-  }
-  ingress {
-    description = "port mongodb"
-    from_port   = 27017
-    to_port     = 27017
-    protocol    = "tcp"
-    cidr_blocks = [var.vpc_cidr]
-  }
-
-  egress {
-    from_port        = 0
-    to_port          = 0
-    protocol         = "-1"
-    cidr_blocks      = ["0.0.0.0/0"]
-    ipv6_cidr_blocks = ["::/0"]
-  }
-
-  tags = merge(
-    var.tags,
-    { Name = "${var.name}-all" },
-  )
-}
-
 resource "aws_security_group" "allow_public" {
   name        = "${var.name}-allow-public"
   description = "Allow public inbound traffic"
@@ -246,7 +189,7 @@ resource "aws_security_group" "allow_public" {
     var.tags,
     { Name = "${var.name}-all" },
   )
-} */
+}
 
 # VPC Outputs
 output "vpc_id" {
@@ -257,7 +200,7 @@ output "vpc_cidr" {
 }
 
 # Subnet Outputs
-/* output "public_subnet_ids" {
+output "public_subnet_ids" {
   value = aws_subnet.public.*.id
 }
 output "public_subnet_cidr_blocks" {
@@ -271,12 +214,9 @@ output "private_subnet_cidr_blocks" {
 }
 
 # Security Group Outputs
-output "sg_db" {
-  value = aws_security_group.allow_db.id
-}
 output "sg_application" {
   value = aws_security_group.allow_application.id
 }
 output "sg_public" {
   value = aws_security_group.allow_public.id
-} */
+}
