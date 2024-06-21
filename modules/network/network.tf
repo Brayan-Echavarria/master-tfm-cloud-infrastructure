@@ -13,8 +13,8 @@ variable "azs"                   {
 variable "private_subnets"       { type = list(string) }
 variable "public_subnets"        { type = list(string) }
 
-variable "custom_routes_private" { default = [] }
-variable "custom_routes_public"  { default = [] }
+/* variable "custom_routes_private" { default = [] }
+variable "custom_routes_public"  { default = [] } */
 
 resource "aws_vpc" "vpc" {
   cidr_block           = var.vpc_cidr
@@ -25,8 +25,6 @@ resource "aws_vpc" "vpc" {
     var.tags,
     { Name = "${var.name}-vpc" },
   )
-
-  lifecycle { create_before_destroy = true }
 }
 
 resource "aws_internet_gateway" "public" {
@@ -38,7 +36,7 @@ resource "aws_internet_gateway" "public" {
   )
 }
 
-resource "aws_subnet" "public" {
+/* resource "aws_subnet" "public" {
   count = length(var.public_subnets)
 
   vpc_id            = aws_vpc.vpc.id
@@ -244,7 +242,7 @@ resource "aws_security_group" "allow_public" {
     var.tags,
     { Name = "${var.name}-all" },
   )
-}
+} */
 
 # VPC Outputs
 output "vpc_id" {
@@ -255,7 +253,7 @@ output "vpc_cidr" {
 }
 
 # Subnet Outputs
-output "public_subnet_ids" {
+/* output "public_subnet_ids" {
   value = aws_subnet.public.*.id
 }
 output "public_subnet_cidr_blocks" {
@@ -277,4 +275,4 @@ output "sg_application" {
 }
 output "sg_public" {
   value = aws_security_group.allow_public.id
-}
+} */
