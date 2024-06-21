@@ -25,6 +25,8 @@ resource "aws_vpc" "vpc" {
     var.tags,
     { Name = "${var.name}-vpc" },
   )
+
+   lifecycle { create_before_destroy = true }
 }
 
 resource "aws_internet_gateway" "public" {
@@ -36,7 +38,7 @@ resource "aws_internet_gateway" "public" {
   )
 }
 
-/* resource "aws_subnet" "public" {
+resource "aws_subnet" "public" {
   count = length(var.public_subnets)
 
   vpc_id            = aws_vpc.vpc.id
@@ -75,6 +77,8 @@ resource "aws_route_table_association" "public" {
   subnet_id      = element(aws_subnet.public.*.id, count.index)
   route_table_id = aws_route_table.public[count.index].id
 }
+
+/* 
 
 resource "aws_subnet" "private" {
   count = length(var.private_subnets)
