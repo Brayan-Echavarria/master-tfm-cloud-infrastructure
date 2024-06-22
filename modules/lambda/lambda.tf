@@ -3,7 +3,7 @@ variable "tags"                 {}
 variable "s3_bucket"            { default = null}
 variable "s3_key"               { default = null}
 variable "function_name"        {}
-variable "runtime"              { default = "nodejs20.x" }
+variable "runtime"              { default = "nodejs16.x" }
 variable "handler"              { default = "main.handler" }
 variable "custom_policy"        { default = [] }
 variable "environment"          { default = {} }    
