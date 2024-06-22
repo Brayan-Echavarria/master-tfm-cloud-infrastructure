@@ -92,10 +92,15 @@ data "archive_file" "file_zip" {
   output_path = "/tmp/${var.name}-${var.s3_key}.zip"
   source {
     content  = <<EOF
-module.exports.handler = async (event, context, callback) => {
-	const what = "world";
-	const response = `Hello $${what}!`;
-	callback(null, response);
+exports.handler = async (event) => {
+    const response = {
+        statusCode: 200,
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ message: "Hello world!" })
+    };
+    return response;
 };
 EOF
     filename = "app.js"
