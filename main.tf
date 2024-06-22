@@ -37,7 +37,7 @@ module "lambda_modeloIAVino" {
   s3_bucket     = "${var.layer}-lambda"
   s3_key        = "hello-world.zip"
   subnets       = module.network.private_subnet_ids
-  sg_ids        = module.network.sg_application
+  sg_ids        = [module.network.sg_application]
   handler       = "main.handler"
   runtime       = "nodejs14.x"
   memory_size   = 128
