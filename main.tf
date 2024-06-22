@@ -29,17 +29,17 @@ resource "aws_s3_bucket" "bucket_lambda" {
   tags = var.tags
 }
 
-module "lambda_modeloIAVino" {
+/* module "lambda_modeloIAVino" {
   source        = "./modules/lambda"
   name          = "${var.layer}"
   tags          = var.tags
   function_name = "modeloIAVino"
   s3_bucket     = "${var.layer}-lambda"
-  s3_key        = "hello-world.zip"
+  s3_key        = "lambda_function.zip"
   subnets       = module.network.private_subnet_ids
   sg_ids        = [module.network.sg_application]
-  handler       = "app.handler"
-  runtime       = "nodejs16.x"
+  handler       = "lambda_function.lambda_handler"
+  runtime       = "python3.8"
   memory_size   = 128
   custom_policy = [
       {
@@ -72,7 +72,7 @@ module "apigateway_lambda" {
   parent_resource_id = aws_api_gateway_rest_api.main.root_resource_id
   path            = "modeloIAVino"
   depends_on = [module.lambda_modeloIAVino]
-}
+} */
 
 /* # Creacion de API Gateway que apunta hacia Kinesis Firehose
 module "api_gateway_centralizador_log" {
