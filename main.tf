@@ -29,7 +29,7 @@ resource "aws_s3_bucket" "bucket_lambda" {
   tags = var.tags
 }
 
-/* module "lambda_modeloIAVino" {
+module "lambda_modeloIAVino" {
   source        = "./modules/lambda"
   name          = "${var.layer}"
   tags          = var.tags
@@ -61,7 +61,7 @@ resource "aws_s3_bucket" "bucket_lambda" {
   depends_on = [
     aws_s3_bucket.bucket_lambda
   ]
-} */
+}
 
 /* # Creacion de API Gateway que apunta hacia Kinesis Firehose
 module "api_gateway_centralizador_log" {
