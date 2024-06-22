@@ -39,7 +39,7 @@ module "lambda_modeloIAVino" {
   subnets       = module.network.private_subnet_ids
   sg_ids        = [module.network.sg_application]
   handler       = "main.handler"
-  runtime       = "nodejs14.x"
+  runtime       = "nodejs20.x"
   memory_size   = 128
   custom_policy = [
       {
