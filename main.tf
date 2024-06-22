@@ -11,11 +11,11 @@ module "network" {
 }
 
 resource "aws_api_gateway_rest_api" "main" {
-  name = "${var.name}-api"
+  name = "${var.layer}-api"
 
   tags  = merge(
     var.tags,
-    { Name = "${var.name}" },
+    { Name = "${var.layer}" },
   )
 }
 
