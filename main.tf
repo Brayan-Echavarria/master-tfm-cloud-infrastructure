@@ -10,6 +10,15 @@ module "network" {
   public_subnets     = var.public_subnets
 }
 
+resource "aws_api_gateway_rest_api" "main" {
+  name = "${var.name}-api"
+
+  tags  = merge(
+    var.tags,
+    { Name = "${var.name}" },
+  )
+}
+
 /* # Creacion de API Gateway que apunta hacia Kinesis Firehose
 module "api_gateway_centralizador_log" {
   source = "./modules/api_gateway"
