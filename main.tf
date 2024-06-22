@@ -17,6 +17,47 @@ resource "aws_api_gateway_rest_api" "main" {
     var.tags,
     { Name = "${var.layer}" },
   )
+
+  endpoint_configuration {
+    types = ["REGIONAL"]
+  }
+
+}
+
+resource "aws_s3_bucket" "bucket_lambda" {
+  bucket = "${var.layer}-lambda"
+  tags = var.tags
+}
+
+module "lambda_modeloIAVino" {
+  source        = "./modules/lambda"
+  name          = "${var.layer}"
+  tags          = var.tags
+  function_name = "modeloIAVino"
+  s3_bucket     = "${var.layer}-lambda"
+  s3_key        = "hello-world.zip"
+  subnets       = module.network.private_subnet_ids
+  sg_ids        = module.network.sg_application
+  handler       = "main.handler"
+  runtime       = "nodejs14.x"
+  memory_size   = 128
+  custom_policy = [
+      {
+        name = "lambda-modeloIAVino-policy"
+        policy = {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Action": [
+                "logs:*",
+            ],
+              "Resource": "*"
+            }
+          ]
+        }
+      }
+    ]
 }
 
 /* # Creacion de API Gateway que apunta hacia Kinesis Firehose
