@@ -58,6 +58,9 @@ module "lambda_modeloIAVino" {
         }
       }
     ]
+  depends_on = [
+    aws_s3_bucket.bucket_lambda
+  ]
 }
 
 /* # Creacion de API Gateway que apunta hacia Kinesis Firehose
