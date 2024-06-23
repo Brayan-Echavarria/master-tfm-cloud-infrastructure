@@ -63,7 +63,7 @@ module "lambda_modeloIAVino" {
   ]
 }
 
-module "apigateway_lambda" {
+/* module "apigateway_lambda" {
   source = "./modules/apigateway-lambda"
   region = var.region
   arn_lambda = module.lambda_modeloIAVino.arn
@@ -72,7 +72,7 @@ module "apigateway_lambda" {
   parent_resource_id = aws_api_gateway_rest_api.main.root_resource_id
   path            = "modeloIAVino"
   depends_on = [module.lambda_modeloIAVino]
-}
+} */
 
 #Cognito Apigateway
 module "cognito" {
