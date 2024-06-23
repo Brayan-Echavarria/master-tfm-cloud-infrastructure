@@ -39,7 +39,7 @@ module "lambda_modeloIAVino" {
   subnets       = module.network.private_subnet_ids
   sg_ids        = [module.network.sg_application]
   handler       = "lambda_function.lambda_handler"
-  runtime       = "python3.10"
+  runtime       = "python3.9"
   memory_size   = 128
   custom_policy = [
       {
