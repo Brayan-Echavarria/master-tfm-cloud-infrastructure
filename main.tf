@@ -104,7 +104,7 @@ resource "aws_sns_topic_subscription" "email_subscription" {
   endpoint  = "${var.target_email}" 
 }
 
-module "lambda_sns_check_lambda" {
+/* module "lambda_sns_check_lambda" {
   source        = "./modules/lambda"
   name          = "${var.layer}"
   tags          = var.tags
@@ -116,6 +116,10 @@ module "lambda_sns_check_lambda" {
   handler       = "lambda_function.lambda_handler"
   runtime       = "python3.9"
   memory_size   = 128
+  environment   = { 
+    SNS_TOPIC_ARN = aws_sns_topic.email_notifications.arn 
+    }
+
   custom_policy = [
       {
         name = "lambda-sns_check_lambda-policy"
@@ -143,4 +147,4 @@ module "lambda_sns_check_lambda" {
   depends_on = [
     aws_s3_bucket.bucket_lambda
   ]
-}
+} */
