@@ -111,11 +111,12 @@ module "lambda_sns_check_lambda" {
   function_name = "sns_check_lambda"
   s3_bucket     = "${var.layer}-lambda"
   s3_key        = "lambda_sns_check_function.zip"
-  subnets       = module.network.private_subnet_ids
+  subnets       = module.network.public_subnet_ids
   sg_ids        = [module.network.sg_application]
   handler       = "lambda_function.lambda_handler"
   runtime       = "python3.9"
   memory_size   = 128
+  timeout = 15
   environment   = { 
     SNS_TOPIC_ARN = aws_sns_topic.email_notifications.arn 
     }
