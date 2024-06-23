@@ -29,7 +29,7 @@ resource "aws_s3_bucket" "bucket_lambda" {
   tags = var.tags
 }
 
-/* module "lambda_modeloIAVino" {
+module "lambda_modeloIAVino" {
   source        = "./modules/lambda"
   name          = "${var.layer}"
   tags          = var.tags
@@ -74,7 +74,7 @@ module "apigateway_lambda" {
   api_gateway_authorizer_id = aws_api_gateway_authorizer.CognitoUserPoolAuthorizerOauth20.id
   authorization_scopes = module.cognito.scope_identifiers[0]
   depends_on = [module.lambda_modeloIAVino]
-} */
+}
 
 #Cognito Apigateway
 module "cognito" {
