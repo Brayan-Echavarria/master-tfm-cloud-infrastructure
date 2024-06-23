@@ -28,6 +28,6 @@ variable "public_subnets"           {
 } 
 
 
-#Cognito Apigateway Technical
-variable "clients_technical"                    {}
-variable "resources_technical"                  {}
+#Cognito Apigateway Twcam
+variable "clients_twcam"                    {}
+variable "resources_twcam"                  {}
