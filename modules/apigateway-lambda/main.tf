@@ -10,6 +10,10 @@ variable "parent_resource_id" {}
 
 variable "path" {}
 
+variable "api_gateway_authorizer_id" {}
+
+variable "authorization_scopes" {}
+
 data "aws_caller_identity" "current" {}
 
 # Crear el recurso del API
@@ -24,7 +28,9 @@ resource "aws_api_gateway_method" "proxy" {
   rest_api_id   = var.id_apigateway
   resource_id   = aws_api_gateway_resource.proxy.id
   http_method   = "POST"
-  authorization = "NONE"
+  authorization = "COGNITO_USER_POOLS"
+  authorizer_id = var.api_gateway_authorizer_id
+  authorization_scopes = var.authorization_scopes
 }
 
 # Crear la integración con la función Lambda

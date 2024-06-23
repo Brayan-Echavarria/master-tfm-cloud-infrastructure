@@ -71,6 +71,8 @@ module "lambda_modeloIAVino" {
   id_apigateway = aws_api_gateway_rest_api.main.id
   parent_resource_id = aws_api_gateway_rest_api.main.root_resource_id
   path            = "modeloIAVino"
+  api_gateway_authorizer_id = aws_api_gateway_authorizer.CognitoUserPoolAuthorizerOauth20.id
+  authorization_scopes = module.cognito.scope_identifiers[0]
   depends_on = [module.lambda_modeloIAVino]
 } */
 
@@ -89,20 +91,3 @@ resource "aws_api_gateway_authorizer" "CognitoUserPoolAuthorizerOauth20" {
   rest_api_id   = aws_api_gateway_rest_api.main.id
   provider_arns = [module.cognito.cognito_arn]
 } 
-
-
-/* module "apigateway_kinesisfirehose_centralizador_log_ms" {
-  source = "./modules/apigateway-kinesisfirehose"
-  environment = var.stack_id
-  name_integracion = "${var.layer}-kinesisfirehose-ms"
-  region = var.region
-  delivery_stream_name = aws_kinesis_firehose_delivery_stream.kinesis_centralizador_log_ms.name
-  id_apigateway = module.api_gateway_centralizador_log.aws_api_gateway_rest_api
-  parent_resource = "/kinesisfirehose/centralizador_log_ms"
-  path            = "record"
-  api_gateway_authorizer_id = aws_api_gateway_authorizer.CognitoUserPoolAuthorizerOauth20.id
-  authorization_scopes = module.cognito.scope_identifiers[0]
-  depends_on = [aws_kinesis_firehose_delivery_stream.kinesis_centralizador_log_ms , aws_api_gateway_resource.stream_name_ms]
-} */
-
-
