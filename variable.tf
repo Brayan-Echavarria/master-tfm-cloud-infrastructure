@@ -31,3 +31,6 @@ variable "public_subnets"           {
 #Cognito Apigateway Twcam
 variable "clients_twcam"                    {}
 variable "resources_twcam"                  {}
+
+#SNS Topic
+variable "target_email" {}
