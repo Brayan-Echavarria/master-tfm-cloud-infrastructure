@@ -14,12 +14,12 @@ public_subnets  = ["10.67.152.208/28", "10.67.152.224/28",	"10.67.152.240/28"]
 
 
 
-clients_technical = [
+clients_twcam = [
         {
-            name                = "TechnicalCliente"
+            name                = "TwcamCliente"
             supported_identity_providers = ["COGNITO"]
             allowed_oauth_flows = ["client_credentials"]
-            allowed_oauth_scopes = ["ServerTechnicalCognito/TechnicalApiScope"]
+            allowed_oauth_scopes = ["ServerTwcamCognito/TwcamApiScope"]
             callback_urls = ["https://www.amazon.com"]
             logout_urls = ["https://www.amazon.com"]
             prevent_user_existence_errors= "ENABLED"
@@ -28,14 +28,14 @@ clients_technical = [
         }
     ]
 
-resources_technical = [
+resources_twcam = [
         {
-            name       = "ServerTechnicalCognito"
-            identifier = "ServerTechnicalCognito"
+            name       = "ServerTwcamCognito"
+            identifier = "ServerTwcamCognito"
             scopes = [
                 {
-                    scope_name        = "TechnicalApiScope"
-                    scope_description = "TechnicalApiScope"
+                    scope_name        = "TwcamApiScope"
+                    scope_description = "TwcamApiScope"
                 }
             ]
         }

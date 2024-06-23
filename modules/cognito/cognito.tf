@@ -132,7 +132,7 @@ resource "aws_cognito_user_pool_client" "client" {
   callback_urls =  lookup(element(var.clients, count.index), "callback_urls", null)
   default_redirect_uri =  lookup(element(var.clients, count.index), "default_redirect_uri", null)
   logout_urls = lookup(element(var.clients, count.index), "logout_urls", null)
-  prevent_user_existence_errors  = lookup(element(var.clients, count.index), "prevent_user_existence_errors") #Modificado respecto al modulo infra
+  prevent_user_existence_errors  = lookup(element(var.clients, count.index), "prevent_user_existence_errors") 
 
   access_token_validity                = lookup(element(var.clients, count.index), "access_token_validity", null)
   id_token_validity                    = lookup(element(var.clients, count.index), "id_token_validity", null)
@@ -170,7 +170,7 @@ resource "aws_cognito_user_pool_client" "client_without_idp" {
   callback_urls =  lookup(element(var.clients, count.index), "callback_urls", null)
   default_redirect_uri =  lookup(element(var.clients, count.index), "default_redirect_uri", null)
   logout_urls = lookup(element(var.clients, count.index), "logout_urls", null)
-  prevent_user_existence_errors  = lookup(element(var.clients, count.index), "prevent_user_existence_errors") #Modificado respecto al modulo infra
+  prevent_user_existence_errors  = lookup(element(var.clients, count.index), "prevent_user_existence_errors") 
 
   access_token_validity                = lookup(element(var.clients, count.index), "access_token_validity", null)
   id_token_validity                    = lookup(element(var.clients, count.index), "id_token_validity", null)

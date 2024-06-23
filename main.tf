@@ -63,7 +63,7 @@ module "lambda_modeloIAVino" {
   ]
 }
 
-module "apigateway_lambda" {
+/* module "apigateway_lambda" {
   source = "./modules/apigateway-lambda"
   region = var.region
   arn_lambda = module.lambda_modeloIAVino.arn
@@ -72,153 +72,26 @@ module "apigateway_lambda" {
   parent_resource_id = aws_api_gateway_rest_api.main.root_resource_id
   path            = "modeloIAVino"
   depends_on = [module.lambda_modeloIAVino]
+} */
+
+#Cognito Apigateway
+module "cognito" {
+    source             = "./modules/cognito"
+    name = "${var.layer}-api"
+    tags = var.tags  
+    clients = var.clients_twcam
+    resources= var.resources_twcam
 }
 
-/* # Creacion de API Gateway que apunta hacia Kinesis Firehose
-module "api_gateway_centralizador_log" {
-  source = "./modules/api_gateway"
-  name        = "centralizador-log-${var.stack_id}"
-  stack_id    = var.stack_id
-  layer       = var.layer
-  tags        = var.tags
-  vpc_id      = module.network.vpc_id
-  private_ids = module.network.private_subnet_ids
-  stage_name  = var.stack_id
-  endpoint_configuration_type = local.is_dev ? "REGIONAL" : "PRIVATE" 
-  ingress_rules_api = var.ingress_rules_api
-}
-
-resource "aws_s3_bucket" "bucket_centralizador_log" {
-  bucket = "${var.layer}-${var.stack_id}-kinesis"
-  tags = var.tags
-}
-
-resource "aws_s3_bucket_lifecycle_configuration" "centralizador_log_lifecycle" {
-  bucket = aws_s3_bucket.bucket_centralizador_log.id
-
-  rule {
-    id      = "logRule"
-    status  = "Enabled"
-    filter {
-      prefix = "log/"
-    }
-
-    transition {
-      days          = 30
-      storage_class = "GLACIER_IR"
-    }
-  }
-
-  rule {
-    id      = "errorLogRule"
-    status  = "Enabled"
-    filter {
-      prefix = "error_log/"
-    }
-
-    transition {
-      days          = 30
-      storage_class = "GLACIER_IR"
-    }
-  }
-
-  rule {
-    id      = "outputRule"
-    status  = "Enabled"
-    filter {
-      prefix = "output/"
-    }
-
-    transition {
-      days          = 30
-      storage_class = "GLACIER_IR"
-    }
-  }
-}
-
-resource "aws_s3_bucket_object" "folder_output" {
-    bucket  = aws_s3_bucket.bucket_centralizador_log.id
-    acl     = "private"
-    key     =  "output/"
-    content_type = "application/x-directory"
-}
+resource "aws_api_gateway_authorizer" "CognitoUserPoolAuthorizerOauth20" {
+  name          = "CognitoUserPoolAuthorizerOauth20"
+  type          = "COGNITO_USER_POOLS"
+  rest_api_id   = aws_api_gateway_rest_api.main.id
+  provider_arns = [module.cognito.cognito_arn]
+} 
 
 
-#Role Kinesis Firehouse
-data "aws_iam_policy_document" "firehose_assume_role" {
-  statement {
-    effect = "Allow"
-
-    principals {
-      type        = "Service"
-      identifiers = ["firehose.amazonaws.com"]
-    }
-
-    actions = ["sts:AssumeRole"]
-  }
-}
-
-resource "aws_iam_role" "firehose_role" {
-  name               = "firehose_test_role"
-  assume_role_policy = data.aws_iam_policy_document.firehose_assume_role.json
-  tags = var.tags
-}
-
-resource "aws_iam_policy" "policy_kinesis_s3" { ##Cambiar
-  name = "${var.layer}-${var.stack_id}-kinesis-s3-policy"
-
-  policy = <<EOF
-{
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Action": [
-        "s3:PutObject",
-        "s3:PutObjectAcl",
-        "s3:ListBucket"
-      ],
-      "Resource": [
-        "${var.destination_bucket_arn}/centralizador_logs/*",
-        "${var.destination_bucket_arn}"
-      ]
-    },
-    {
-      "Effect": "Allow",
-      "Action": [
-        "glue:GetTable",
-        "glue:GetTableVersion",
-        "glue:GetTableVersions"
-      ],
-      "Resource": "*"
-    }
-  ]
-}
-EOF
-}
-
-
-## Integracion ApiGateway-KinesisFirehose
-data "aws_api_gateway_resource" "parent_path" {
-  rest_api_id = module.api_gateway_centralizador_log.aws_api_gateway_rest_api
-  path        = "/" 
-}
-
-resource "aws_api_gateway_resource" "kinesisfirehose" {
-  rest_api_id = module.api_gateway_centralizador_log.aws_api_gateway_rest_api
-  parent_id   = data.aws_api_gateway_resource.parent_path.id
-  path_part   = "kinesisfirehose"
-}
-
-
-## Integracion ApiGateway-KinesisFirehose
-resource "aws_api_gateway_resource" "stream_name_ms" {
-  rest_api_id = module.api_gateway_centralizador_log.aws_api_gateway_rest_api
-  parent_id   = aws_api_gateway_resource.kinesisfirehose.id
-  path_part   = "centralizador_log_ms"
-}
-
-module "apigateway_kinesisfirehose_centralizador_log_ms" {
+/* module "apigateway_kinesisfirehose_centralizador_log_ms" {
   source = "./modules/apigateway-kinesisfirehose"
   environment = var.stack_id
   name_integracion = "${var.layer}-kinesisfirehose-ms"
@@ -230,22 +103,6 @@ module "apigateway_kinesisfirehose_centralizador_log_ms" {
   api_gateway_authorizer_id = aws_api_gateway_authorizer.CognitoUserPoolAuthorizerOauth20.id
   authorization_scopes = module.cognito.scope_identifiers[0]
   depends_on = [aws_kinesis_firehose_delivery_stream.kinesis_centralizador_log_ms , aws_api_gateway_resource.stream_name_ms]
-}
-
-#Cognito Apigateway Centralizador-log
-module "cognito" {
-    source             = "./modules/cognito"
-
-    name = "${var.layer}-${var.stack_id}-centralizador-log-api"
-    tags = var.tags  
-    clients = var.clients_technical
-    resources= var.resources_technical
-}
-
-resource "aws_api_gateway_authorizer" "CognitoUserPoolAuthorizerOauth20" {
-  name          = "CognitoUserPoolAuthorizerOauth20"
-  type          = "COGNITO_USER_POOLS"
-  rest_api_id   = module.api_gateway_centralizador_log.aws_api_gateway_rest_api
-  provider_arns = [module.cognito.cognito_arn]
 } */
+
 
