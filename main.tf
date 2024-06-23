@@ -91,3 +91,56 @@ resource "aws_api_gateway_authorizer" "CognitoUserPoolAuthorizerOauth20" {
   rest_api_id   = aws_api_gateway_rest_api.main.id
   provider_arns = [module.cognito.cognito_arn]
 } 
+
+# Create SNS Topic
+resource "aws_sns_topic" "email_notifications" {
+  name = "email-notifications"
+}
+
+# Create SNS Subscription for Email
+resource "aws_sns_topic_subscription" "email_subscription" {
+  topic_arn = aws_sns_topic.email_notifications.arn
+  protocol  = "email"
+  endpoint  = "${var.target_email}" 
+}
+
+module "lambda_sns_check_lambda" {
+  source        = "./modules/lambda"
+  name          = "${var.layer}"
+  tags          = var.tags
+  function_name = "sns_check_lambda"
+  s3_bucket     = "${var.layer}-lambda"
+  s3_key        = "lambda_sns_check_function.zip"
+  subnets       = module.network.private_subnet_ids
+  sg_ids        = [module.network.sg_application]
+  handler       = "lambda_function.lambda_handler"
+  runtime       = "python3.9"
+  memory_size   = 128
+  custom_policy = [
+      {
+        name = "lambda-sns_check_lambda-policy"
+        policy = {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Action": [
+                "logs:*",
+            ],
+              "Resource": "*"
+            },
+            {
+              Action = [
+                "sns:Publish"
+              ],
+              Effect   = "Allow",
+              Resource = aws_sns_topic.email_notifications.arn
+            }
+          ]
+        }
+      }
+    ]
+  depends_on = [
+    aws_s3_bucket.bucket_lambda
+  ]
+}
