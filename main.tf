@@ -29,7 +29,7 @@ resource "aws_s3_bucket" "bucket_lambda" {
   tags = var.tags
 }
 
-module "lambda_modeloIAVino" {
+/* module "lambda_modeloIAVino" {
   source        = "./modules/lambda"
   name          = "${var.layer}"
   tags          = var.tags
@@ -39,7 +39,7 @@ module "lambda_modeloIAVino" {
   subnets       = module.network.private_subnet_ids
   sg_ids        = [module.network.sg_application]
   handler       = "lambda_function.lambda_handler"
-  runtime       = "python3.8"
+  runtime       = "python3.10"
   memory_size   = 128
   custom_policy = [
       {
@@ -74,7 +74,7 @@ module "apigateway_lambda" {
   api_gateway_authorizer_id = aws_api_gateway_authorizer.CognitoUserPoolAuthorizerOauth20.id
   authorization_scopes = module.cognito.scope_identifiers[0]
   depends_on = [module.lambda_modeloIAVino]
-}
+} */
 
 #Cognito Apigateway
 module "cognito" {
