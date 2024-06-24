@@ -154,7 +154,6 @@ resource "aws_lambda_function" "main" {
 
   lifecycle {
     ignore_changes = [
-      environment,
       runtime,
       s3_key,
       handler

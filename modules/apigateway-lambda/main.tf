@@ -58,3 +58,8 @@ resource "aws_lambda_permission" "api_gateway" {
   principal     = "apigateway.amazonaws.com"
   source_arn    = "arn:aws:execute-api:${var.region}:${data.aws_caller_identity.current.account_id}:${var.id_apigateway}/*/POST/${var.path}"
 }
+
+# Output del URL del endpoint de la API
+output "api_url" {
+  value = "${aws_api_gateway_deployment.deployment.invoke_url}/${aws_api_gateway_resource.proxy.path_part}"
+}
