@@ -104,7 +104,7 @@ resource "aws_sns_topic_subscription" "email_subscription" {
   endpoint  = "${var.target_email}" 
 }
 
-/* module "lambda_sns_check_lambda" {
+module "lambda_sns_check_lambda" {
   source        = "./modules/lambda"
   name          = "${var.layer}"
   tags          = var.tags
@@ -112,7 +112,7 @@ resource "aws_sns_topic_subscription" "email_subscription" {
   s3_bucket     = "${var.layer}-lambda"
   s3_key        = "lambda_sns_check_function.zip"
   subnets       = module.network.public_subnet_ids
-  sg_ids        = [module.network.sg_public]
+  sg_ids        = [module.network.sg_all]
   handler       = "lambda_function.lambda_handler"
   runtime       = "python3.9"
   memory_size   = 128
@@ -148,4 +148,4 @@ resource "aws_sns_topic_subscription" "email_subscription" {
   depends_on = [
     aws_s3_bucket.bucket_lambda
   ]
-} */
+}

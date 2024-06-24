@@ -155,7 +155,7 @@ resource "aws_security_group" "allow_application" {
   )
 }
 
-/* resource "aws_security_group" "allow_public" {
+resource "aws_security_group" "allow_public" {
   name        = "${var.name}-allow-public"
   description = "Allow public inbound traffic"
   vpc_id      = aws_vpc.vpc.id
@@ -189,10 +189,10 @@ resource "aws_security_group" "allow_application" {
     var.tags,
     { Name = "${var.name}-all" },
   )
-} */
+}
 
-resource "aws_security_group" "allow_public" {
-  name        = "${var.name}-allow-public"
+resource "aws_security_group" "allow_all" {
+  name        = "${var.name}-allow-all"
   description = "Allow all inbound and outbound traffic"
   vpc_id      = aws_vpc.vpc.id
 
@@ -246,7 +246,10 @@ output "private_subnet_cidr_blocks" {
 output "sg_application" {
   value = aws_security_group.allow_application.id
 }
-/* output "sg_public" {
+output "sg_public" {
   value = aws_security_group.allow_public.id
 }
- */
+
+output "sg_all" {
+  value = aws_security_group.allow_all.id
+}
