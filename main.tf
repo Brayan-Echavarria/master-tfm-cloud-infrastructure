@@ -117,14 +117,13 @@ module "lambda_sns_check_lambda" {
   runtime       = "python3.9"
   memory_size   = 128
   timeout = 15
-  environment   = { 
-    SNS_TOPIC_ARN = "${aws_sns_topic.email_notifications.arn}",
-    COGNITO_CLIENT_ID = "${module.cognito.client_id}",
-    COGNITO_CLIENT_SECRET = "${module.cognito.client_secret}",
-    COGNITO_TOKEN_URL = "https://${var.layer}.auth.${var.region}.amazoncognito.com/oauth2/token",
-    API_URL = "${module.apigateway_lambda.api_url}"
-
-    }
+  environment   = {
+    SNS_TOPIC_ARN        = "${aws_sns_topic.email_notifications.arn}"
+    COGNITO_CLIENT_ID    = "${module.cognito.client_id}"
+    COGNITO_CLIENT_SECRET= "${module.cognito.client_secret}"
+    COGNITO_TOKEN_URL    = "https://${var.layer}.auth.${var.region}.amazoncognito.com/oauth2/token"
+    API_URL              = "${module.apigateway_lambda.api_url}"
+  }
 
   custom_policy = [
       {
