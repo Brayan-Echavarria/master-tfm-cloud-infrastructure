@@ -246,6 +246,7 @@ output "private_subnet_cidr_blocks" {
 output "sg_application" {
   value = aws_security_group.allow_application.id
 }
-output "sg_public" {
+/* output "sg_public" {
   value = aws_security_group.allow_public.id
 }
+ */
