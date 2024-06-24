@@ -93,7 +93,7 @@ resource "aws_subnet" "private" {
   lifecycle { create_before_destroy = true }
 }
 
-resource "aws_network_acl" "acl" {
+/* resource "aws_network_acl" "acl" {
   vpc_id     = aws_vpc.vpc.id
   subnet_ids = concat(aws_subnet.public.*.id, aws_subnet.private.*.id)
 
@@ -119,7 +119,7 @@ resource "aws_network_acl" "acl" {
     var.tags,
     { Name = "${var.name}-all" },
   )
-}
+} */
 
 resource "aws_security_group" "allow_application" {
   name        = "${var.name}-application-allow"
