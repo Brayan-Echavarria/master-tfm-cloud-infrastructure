@@ -191,8 +191,8 @@ resource "aws_security_group" "allow_application" {
   )
 } */
 
-resource "aws_security_group" "allow_all" {
-  name        = "${var.name}-allow-all"
+resource "aws_security_group" "allow_public" {
+  name        = "${var.name}-allow-public"
   description = "Allow all inbound and outbound traffic"
   vpc_id      = aws_vpc.vpc.id
 
