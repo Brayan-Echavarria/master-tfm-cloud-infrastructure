@@ -122,7 +122,9 @@ module "lambda_sns_check_lambda" {
     COGNITO_CLIENT_ID    = "${module.cognito.client_id_without_idp[0]}",
     COGNITO_CLIENT_SECRET= "${module.cognito.client_secret_without_idp[0]}",
     COGNITO_TOKEN_URL    = "https://${var.layer}-api.auth.${var.region}.amazoncognito.com/oauth2/token",
-    API_URL              = "${module.apigateway_lambda.api_url}"
+    API_URL              = "${module.apigateway_lambda.api_url}",
+    COGNITO_SCOPE        = "ServerTwcamCognito/TwcamApiScope"
+
   }
 
   custom_policy = [
