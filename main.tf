@@ -138,26 +138,17 @@ module "lambda_sns_check_lambda" {
               "Effect": "Allow",
               "Action": [
                 "logs:*",
+                "s3:GetObject",
+                "s3:ListBucket"
             ],
               "Resource": "*"
             },
             {
-              "Action" = [
+              Action = [
                 "sns:Publish"
               ],
-              "Effect"   = "Allow",
-              "Resource" = aws_sns_topic.email_notifications.arn
-            },
-            {
-              "Effect" = "Allow",
-              "Action" = [
-                "s3:GetObject",
-                "s3:ListBucket"
-              ],
-              "Resource" = [
-                "${aws_s3_bucket.bucket_test_data.arn}",
-                "${aws_s3_bucket.bucket_test_data.arn}/*"
-              ]
+              Effect   = "Allow",
+              Resource = aws_sns_topic.email_notifications.arn
             }
           ]
         }
