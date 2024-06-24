@@ -1,5 +1,5 @@
 # Create network y VPC
-module "network" {
+/* module "network" {
   source             = "./modules/network"
   name               = "${var.layer}-network"
   layer              = var.layer
@@ -148,4 +148,4 @@ module "lambda_sns_check_lambda" {
   depends_on = [
     aws_s3_bucket.bucket_lambda
   ]
-}
+} */
