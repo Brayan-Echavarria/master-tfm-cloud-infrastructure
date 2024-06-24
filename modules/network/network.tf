@@ -93,34 +93,6 @@ resource "aws_subnet" "private" {
   lifecycle { create_before_destroy = true }
 }
 
-/* resource "aws_network_acl" "acl" {
-  vpc_id     = aws_vpc.vpc.id
-  subnet_ids = concat(aws_subnet.public.*.id, aws_subnet.private.*.id)
-
-  ingress {
-    protocol   = "-1"
-    rule_no    = 100
-    action     = "allow"
-    cidr_block = "0.0.0.0/0"
-    from_port  = 0
-    to_port    = 0
-  }
-
-  egress {
-    protocol   = "-1"
-    rule_no    = 100
-    action     = "allow"
-    cidr_block = "0.0.0.0/0"
-    from_port  = 0
-    to_port    = 0
-  }
-
-  tags = merge(
-    var.tags,
-    { Name = "${var.name}-all" },
-  )
-} */
-
 resource "aws_security_group" "allow_application" {
   name        = "${var.name}-application-allow"
   description = "Allow application inbound traffic"
@@ -139,42 +111,6 @@ resource "aws_security_group" "allow_application" {
     to_port     = 80
     protocol    = "tcp"
     cidr_blocks = [var.vpc_cidr]
-  }
-
-  egress {
-    from_port        = 0
-    to_port          = 0
-    protocol         = "-1"
-    cidr_blocks      = ["0.0.0.0/0"]
-    ipv6_cidr_blocks = ["::/0"]
-  }
-
-  tags = merge(
-    var.tags,
-    { Name = "${var.name}-all" },
-  )
-}
-
-resource "aws_security_group" "allow_public" {
-  name        = "${var.name}-allow-public"
-  description = "Allow public inbound traffic"
-  vpc_id      = aws_vpc.vpc.id
-
-  ingress {
-    description = "public inbound traffic"
-    from_port   = 443
-    to_port     = 443
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-    ipv6_cidr_blocks = ["::/0"]
-  }
-  ingress {
-    description = "public inbound traffic"
-    from_port   = 80
-    to_port     = 80
-    protocol    = "tcp"
-    cidr_blocks = ["0.0.0.0/0"]
-    ipv6_cidr_blocks = ["::/0"]
   }
 
   egress {
@@ -245,9 +181,6 @@ output "private_subnet_cidr_blocks" {
 # Security Group Outputs
 output "sg_application" {
   value = aws_security_group.allow_application.id
-}
-output "sg_public" {
-  value = aws_security_group.allow_public.id
 }
 
 output "sg_all" {
