@@ -155,3 +155,21 @@ module "lambda_sns_check_lambda" {
     aws_s3_bucket.bucket_lambda
   ]
 }
+
+# Crear el bucket S3 test data
+resource "aws_s3_bucket" "bucket_test_data" {
+  bucket = "${var.layer}-test-data"
+  tags = var.tags
+}
+
+# Subir el archivo CSV al bucket S3
+resource "aws_s3_object" "csv_object" {
+  bucket = aws_s3_bucket.bucket_test_data.bucket
+  key    = "winequality-red-test-data.csv"
+  source = "./test_data/winequality-red-test-data.csv"
+
+  depends_on = [
+    aws_s3_bucket.bucket_test_data
+  ]
+}
+
