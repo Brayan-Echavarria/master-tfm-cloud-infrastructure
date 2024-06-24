@@ -42,4 +42,4 @@ resources_twcam = [
     ]
 
 #SNS Topic
-target_email = "brayanechavarria38@gmail.com"
+target_email = "mastertecnologiasweb@gmail.com"
