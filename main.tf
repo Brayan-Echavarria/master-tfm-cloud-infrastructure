@@ -41,6 +41,9 @@ module "lambda_modeloIAVino" {
   handler       = "lambda_function.lambda_handler"
   runtime       = "python3.9"
   memory_size   = 128
+  environment   = {
+    MODEL_PATH        = "/var/task/sklearn_model.joblib"
+  }
   custom_policy = [
       {
         name = "lambda-modeloIAVino-policy"
