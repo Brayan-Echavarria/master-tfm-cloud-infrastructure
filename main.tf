@@ -180,7 +180,7 @@ resource "aws_s3_object" "csv_object" {
 }
 
 #Event trigger
-/* resource "aws_cloudwatch_event_rule" "check_lambda_event_rule" {
+resource "aws_cloudwatch_event_rule" "check_lambda_event_rule" {
   name                = "${var.layer}-check-lambda-cron"
   schedule_expression = "rate(10 minutes)" #Cada 10 minutos
   is_enabled = true
@@ -197,5 +197,5 @@ resource "aws_lambda_permission" "allow_cloudwatch_execute_check_lambda_event" {
   function_name = module.lambda_sns_check_lambda.arn
   principal = "events.amazonaws.com"
   source_arn = aws_cloudwatch_event_rule.check_lambda_event_rule.arn
-} */
+}
 
