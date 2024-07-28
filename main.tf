@@ -1,5 +1,5 @@
 # Create network y VPC
-/* module "network" {
+module "network" {
   source             = "./modules/network"
   name               = "${var.layer}-network"
   layer              = var.layer
@@ -8,9 +8,9 @@
   azs                = var.azs
   private_subnets    = var.private_subnets
   public_subnets     = var.public_subnets
-} */
+}
 
-/* resource "aws_api_gateway_rest_api" "main" {
+resource "aws_api_gateway_rest_api" "main" {
   name = "${var.layer}-api"
 
   tags  = merge(
@@ -177,10 +177,10 @@ resource "aws_s3_object" "csv_object" {
   depends_on = [
     aws_s3_bucket.bucket_test_data
   ]
-} */
+}
 
 #Event trigger
-/* resource "aws_cloudwatch_event_rule" "check_lambda_event_rule" {
+resource "aws_cloudwatch_event_rule" "check_lambda_event_rule" {
   name                = "${var.layer}-check-lambda-cron"
   schedule_expression = "rate(10 minutes)" #Cada 10 minutos
   is_enabled = true
@@ -197,5 +197,5 @@ resource "aws_lambda_permission" "allow_cloudwatch_execute_check_lambda_event" {
   function_name = module.lambda_sns_check_lambda.arn
   principal = "events.amazonaws.com"
   source_arn = aws_cloudwatch_event_rule.check_lambda_event_rule.arn
-} */
+}
 
