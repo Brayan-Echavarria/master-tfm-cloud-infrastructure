@@ -10,7 +10,7 @@ module "network" {
   public_subnets     = var.public_subnets
 }
 
-resource "aws_api_gateway_rest_api" "main" {
+/* resource "aws_api_gateway_rest_api" "main" {
   name = "${var.layer}-api"
 
   tags  = merge(
@@ -177,7 +177,7 @@ resource "aws_s3_object" "csv_object" {
   depends_on = [
     aws_s3_bucket.bucket_test_data
   ]
-}
+} */
 
 #Event trigger
 /* resource "aws_cloudwatch_event_rule" "check_lambda_event_rule" {
