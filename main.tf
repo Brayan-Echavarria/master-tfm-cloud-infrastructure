@@ -1,5 +1,5 @@
 # Create network y VPC
-module "network" {
+/* module "network" {
   source             = "./modules/network"
   name               = "${var.layer}-network"
   layer              = var.layer
@@ -8,7 +8,7 @@ module "network" {
   azs                = var.azs
   private_subnets    = var.private_subnets
   public_subnets     = var.public_subnets
-}
+} */
 
 /* resource "aws_api_gateway_rest_api" "main" {
   name = "${var.layer}-api"
